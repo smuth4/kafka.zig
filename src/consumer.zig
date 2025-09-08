@@ -17,7 +17,7 @@ pub const Consumer = struct {
         const kafka_consumer: ?*librdkafka.rd_kafka_t = librdkafka.rd_kafka_new(librdkafka.RD_KAFKA_CONSUMER, kafka_conf, &error_message, error_message.len);
         if (kafka_consumer == null) {
             @branchHint(.unlikely);
-            @panic(&error_message);
+            std.log.err("Failed to initialize kafka consumer: {s}", .{error_message});
         }
         std.log.info("kafka consumer initialized", .{});
         return kafka_consumer;

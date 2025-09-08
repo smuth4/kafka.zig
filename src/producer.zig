@@ -18,9 +18,10 @@ pub const Producer = struct {
         const kafka_producer: ?*librdkafka.rd_kafka_t = librdkafka.rd_kafka_new(librdkafka.RD_KAFKA_PRODUCER, kafka_conf, &err_message, err_message.len);
         if (kafka_producer == null) {
             @branchHint(.unlikely);
-            @panic(&err_message);
+            std.log.err("Failed to create producer: {s}", .{err_message});
+        } else {
+            std.log.info("kafka producer initialized", .{});
         }
-        std.log.info("kafka producer initialized", .{});
         return kafka_producer;
     }
 
@@ -56,9 +57,9 @@ pub const Producer = struct {
         );
 
         if (err_code == librdkafka.RD_KAFKA_RESP_ERR_NO_ERROR) {
-            std.log.info("Message sent successfully!", .{});
+            std.log.info("Message produced successfully!", .{});
         } else {
-            std.log.err("Failed to send message: {s}", .{errors.err2Str(err_code)});
+            std.log.err("Failed to produce message: {s}", .{errors.err2Str(err_code)});
         }
     }
 

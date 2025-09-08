@@ -6,7 +6,7 @@ pub fn createTopic(client: ?*librdkafka.rd_kafka_t, topic_conf: ?*librdkafka.str
     const kafka_topic: ?*librdkafka.struct_rd_kafka_topic_s = librdkafka.rd_kafka_topic_new(client, topic_name, topic_conf);
     if (kafka_topic == null) {
         @branchHint(.unlikely);
-        @panic("Failed to create Kafka topic");
+        std.log.err("Failed to create Kafka topic", .{});
     }
     return kafka_topic;
 }
@@ -24,7 +24,7 @@ pub const Builder = struct {
         const topic_conf: ?*librdkafka.struct_rd_kafka_topic_conf_s = librdkafka.rd_kafka_topic_conf_new();
         if (topic_conf == null) {
             @branchHint(.unlikely);
-            @panic("Failed to create topic configuration");
+            std.log.err("Failed to create topic configuration", .{});
         }
         return topic_conf;
     }
